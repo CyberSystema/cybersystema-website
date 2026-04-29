@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CyberSystema Web (Next.js)
 
-## Getting Started
+Production migration target for CyberSystema public website and secure administrator control plane.
 
-First, run the development server:
+## Current Baseline
+
+- Next.js App Router with TypeScript
+- CyberSystema-branded public landing page
+- Hardened security proxy headers (`src/proxy.ts`)
+- Admin login flow (`/admin/login`) with:
+	- strict input validation (`zod`)
+	- rate limiting (in-memory placeholder)
+	- signed HttpOnly secure session token (`jose`)
+- Admin dashboard guard (`/admin`)
+- Cloudflare deployment scaffolding (`wrangler.toml`)
+- D1 schema baseline (`db/migrations/0001_init.sql`)
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy environment file and set secure values:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality Gates
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-## Learn More
+## Cloudflare Workflow
 
-To learn more about Next.js, take a look at the following resources:
+Build and deploy workflow is prepared for OpenNext + Workers:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run cf:build
+npm run cf:preview
+npm run cf:deploy
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Before deployment, update `wrangler.toml` bindings for D1/KV/R2 and configure secrets in Cloudflare.
 
-## Deploy on Vercel
+## Public Repository Baseline
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This repository is prepared for public GitHub hosting.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Local secret files remain ignored while `.env.example` stays committed.
+- CI verifies lint, typecheck, and production build on pushes and pull requests.
+- CodeQL is enabled for automated static analysis.
+- Dependabot is configured for dependency and GitHub Actions updates.
+- Security reporting guidance lives in `SECURITY.md`.
+- Contribution expectations live in `CONTRIBUTING.md`.
+
+## Security Notes
+
+- Do not keep plaintext `ADMIN_PASSWORD` long-term.
+- Next phase should move admin auth to salted password hash storage in D1 and add MFA.
+- Current login rate limiter is process-local; replace with Cloudflare KV-based distributed limiter.
+- Add Turnstile verification to admin login and contact form before production launch.
+
+## Next Implementation Targets
+
+1. D1-backed admin users and projects CRUD
+2. Contact pipeline with Turnstile + transactional email provider
+3. KV-backed global rate limiting and lockouts
+4. Audit logging for all privileged actions
+5. CI pipeline with dependency and secret scanning

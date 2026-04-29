@@ -1,0 +1,30 @@
+name = "cybersystema-web"
+main = ".open-next/worker.js"
+compatibility_date = "2026-04-29"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+
+[vars]
+NODE_ENV = "production"
+
+# Bindings below are placeholders for phased rollout.
+# Uncomment and populate once the corresponding resources are provisioned.
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "cybersystema-prod"
+# database_id = "replace-with-d1-id"
+
+# [[kv_namespaces]]
+# binding = "SECURITY_KV"
+# id = "replace-with-kv-id"
+
+# [[r2_buckets]]
+# binding = "MEDIA_BUCKET"
+# bucket_name = "cybersystema-media"

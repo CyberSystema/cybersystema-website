@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #030813;
+  --foreground: #cdefff;
+  --cyber-cyan: #20d8ff;
+  --cyber-blue: #2f59ff;
+  --cyber-indigo: #5d73ff;
+  --cyber-border: rgba(78, 226, 255, 0.35);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-rajdhani);
+  --font-mono: var(--font-share-tech-mono);
+  --font-display: var(--font-syncopate);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
+}
+
+.cyber-grid {
+  background-image: linear-gradient(rgba(32, 216, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 216, 255, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.cyber-btn {
+  border: 1px solid var(--cyber-border);
+  background: linear-gradient(120deg, rgba(14, 80, 107, 0.35), rgba(11, 18, 44, 0.75));
+  color: #d9f5ff;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  padding: 0.95rem 1.1rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-family: var(--font-share-tech-mono), monospace;
+  transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.cyber-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(104, 227, 255, 0.9);
+  box-shadow: 0 0 24px rgba(32, 216, 255, 0.28);
+}
+
+.status-box {
+  border: 1px solid rgba(98, 154, 255, 0.35);
+  background: rgba(6, 16, 40, 0.65);
+  border-radius: 0.45rem;
+  padding: 0.7rem 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: var(--font-share-tech-mono), monospace;
 }
