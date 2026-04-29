@@ -25,25 +25,37 @@ export default function AdminLoginPage() {
     event.preventDefault();
     setLoading(true);
     setError(null);
+    let shouldStopLoading = true;
 
-    const response = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const payload: unknown = await response.json().catch(() => null);
+      const payload: unknown = await response.json().catch(() => null);
 
-    if (!response.ok) {
-      setLoading(false);
-      setError(extractErrorMessage(payload));
-      return;
+      if (!response.ok) {
+        setError(extractErrorMessage(payload));
+        return;
+      }
+
+      shouldStopLoading = false;
+      router.replace("/admin");
+      router.refresh();
+
+      // Fallback in case client-side navigation is delayed or blocked.
+      window.location.assign("/admin");
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      if (shouldStopLoading) {
+        setLoading(false);
+      }
     }
-
-    router.replace("/admin");
-    router.refresh();
   }
 
   return (
