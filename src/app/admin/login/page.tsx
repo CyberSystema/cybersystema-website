@@ -10,6 +10,17 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  function extractErrorMessage(payload: unknown): string {
+    if (typeof payload === "object" && payload !== null && "error" in payload) {
+      const value = (payload as { error?: unknown }).error;
+      if (typeof value === "string" && value.length > 0) {
+        return value;
+      }
+    }
+
+    return "Login failed";
+  }
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
@@ -23,11 +34,11 @@ export default function AdminLoginPage() {
       body: JSON.stringify({ username, password }),
     });
 
-    const payload = await response.json().catch(() => null);
+    const payload: unknown = await response.json().catch(() => null);
 
     if (!response.ok) {
       setLoading(false);
-      setError(payload?.error ?? "Login failed");
+      setError(extractErrorMessage(payload));
       return;
     }
 

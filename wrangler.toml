@@ -16,15 +16,18 @@ NODE_ENV = "production"
 # Bindings below are placeholders for phased rollout.
 # Uncomment and populate once the corresponding resources are provisioned.
 
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "cybersystema-prod"
-# database_id = "replace-with-d1-id"
+[[d1_databases]]
+binding = "DB"
+database_name = "cybersystema-prod"
+database_id = "a0e06141-0651-4f54-9a0a-57585bdccbaa"
+migrations_dir = "db/migrations"
 
-# [[kv_namespaces]]
-# binding = "SECURITY_KV"
-# id = "replace-with-kv-id"
+[[kv_namespaces]]
+binding = "SECURITY_KV"
+id = "5e2d8b51d4ac4de3811195101010861b"
 
+# R2 is intentionally disabled for near-zero cost operation.
+# Uncomment only if a feature explicitly needs object storage.
 # [[r2_buckets]]
 # binding = "MEDIA_BUCKET"
 # bucket_name = "cybersystema-media"
