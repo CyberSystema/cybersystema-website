@@ -13,22 +13,22 @@
     "cf:deploy": "opennextjs-cloudflare deploy"
   },
   "dependencies": {
-    "jose": "^6.2.3",
+    "jose": "6.2.3",
     "next": "16.2.4",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "zod": "^4.3.6"
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "zod": "4.3.6"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.19.4",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@opennextjs/cloudflare": "1.19.4",
+    "@tailwindcss/postcss": "4.2.4",
+    "@types/node": "25.6.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
     "eslint-config-next": "16.2.4",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.86.0"
+    "tailwindcss": "4.2.4",
+    "typescript": "6.0.3",
+    "wrangler": "4.86.0"
   }
 }
