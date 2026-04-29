@@ -9,8 +9,8 @@ const CONTENT_SECURITY_POLICY = [
   "img-src 'self' data: https:",
   "font-src 'self' https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "script-src 'self'",
-  "connect-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com",
+  "connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com",
   "object-src 'none'",
   "upgrade-insecure-requests",
 ].join("; ");
