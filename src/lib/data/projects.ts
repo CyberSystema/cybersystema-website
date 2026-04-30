@@ -12,6 +12,8 @@ export type ProjectRecord = {
   support_md: string | null;
   external_url: string | null;
   repository_url: string | null;
+  image_url: string | null;
+  image_alt: string | null;
   status: ProjectStatus;
   featured: number;
   published_at: string | null;
@@ -61,6 +63,8 @@ export type ProjectInput = {
   support_md: string | null;
   external_url: string | null;
   repository_url: string | null;
+  image_url: string | null;
+  image_alt: string | null;
   status: ProjectStatus;
   featured: boolean;
   publish: boolean;
@@ -74,8 +78,8 @@ export async function createProject(
   const publishedAt = input.publish ? new Date().toISOString() : null;
   await db
     .prepare(
-      `INSERT INTO projects (id, slug, name, summary, description_md, privacy_md, support_md, external_url, repository_url, status, featured, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO projects (id, slug, name, summary, description_md, privacy_md, support_md, external_url, repository_url, image_url, image_alt, status, featured, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -87,6 +91,8 @@ export async function createProject(
       input.support_md,
       input.external_url,
       input.repository_url,
+      input.image_url,
+      input.image_alt,
       input.status,
       input.featured ? 1 : 0,
       publishedAt,
@@ -113,7 +119,7 @@ export async function updateProject(
   await db
     .prepare(
       `UPDATE projects
-         SET slug = ?, name = ?, summary = ?, description_md = ?, privacy_md = ?, support_md = ?, external_url = ?, repository_url = ?, status = ?, featured = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
+         SET slug = ?, name = ?, summary = ?, description_md = ?, privacy_md = ?, support_md = ?, external_url = ?, repository_url = ?, image_url = ?, image_alt = ?, status = ?, featured = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
     )
     .bind(
@@ -125,6 +131,8 @@ export async function updateProject(
       input.support_md,
       input.external_url,
       input.repository_url,
+      input.image_url,
+      input.image_alt,
       input.status,
       input.featured ? 1 : 0,
       publishedAt,

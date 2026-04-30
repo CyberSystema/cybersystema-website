@@ -26,6 +26,15 @@ export default async function ProjectDetailPage({ params }: Params) {
         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-300/70">Status: {project.status}</p>
         <p className="font-mono text-sm leading-relaxed text-cyan-100/85">{project.summary}</p>
       </header>
+      {project.image_url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={project.image_url}
+          alt={project.image_alt ?? project.name}
+          className="w-full rounded-xl border border-cyan-300/25 object-cover"
+          loading="lazy"
+        />
+      ) : null}
       <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-5">
         <Markdown source={project.description_md} />
       </article>

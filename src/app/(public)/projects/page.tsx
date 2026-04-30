@@ -30,15 +30,26 @@ export default async function ProjectsPage() {
 
       <ul className="grid gap-4 sm:grid-cols-2">
         {projects.map((p) => (
-          <li key={p.id} className="rounded-xl border border-cyan-300/25 bg-slate-950/55 p-5">
-            <h2 className="font-display text-xl tracking-widest text-cyan-100">{p.name}</h2>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-300/70">{p.status}</p>
-            <p className="mt-3 font-mono text-sm leading-relaxed text-cyan-100/85">{p.summary}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link className="cyber-btn" href={`/projects/${p.slug}`}>Details</Link>
-              {p.external_url ? (
-                <a className="cyber-btn" href={p.external_url} target="_blank" rel="noopener noreferrer">Visit</a>
-              ) : null}
+          <li key={p.id} className="flex flex-col overflow-hidden rounded-xl border border-cyan-300/25 bg-slate-950/55">
+            {p.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={p.image_url}
+                alt={p.image_alt ?? p.name}
+                className="h-44 w-full border-b border-cyan-300/20 object-cover"
+                loading="lazy"
+              />
+            ) : null}
+            <div className="p-5">
+              <h2 className="font-display text-xl tracking-widest text-cyan-100">{p.name}</h2>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-300/70">{p.status}</p>
+              <p className="mt-3 font-mono text-sm leading-relaxed text-cyan-100/85">{p.summary}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link className="cyber-btn" href={`/projects/${p.slug}`}>Details</Link>
+                {p.external_url ? (
+                  <a className="cyber-btn" href={p.external_url} target="_blank" rel="noopener noreferrer">Visit</a>
+                ) : null}
+              </div>
             </div>
           </li>
         ))}

@@ -22,6 +22,8 @@ const EMPTY_FORM = {
   support_md: "",
   external_url: "",
   repository_url: "",
+  image_url: "",
+  image_alt: "",
   status: "planned" as ProjectStatus,
   featured: false,
   publish: false,
@@ -50,6 +52,8 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
       support_md: p.support_md ?? "",
       external_url: p.external_url ?? "",
       repository_url: p.repository_url ?? "",
+      image_url: p.image_url ?? "",
+      image_alt: p.image_alt ?? "",
       status: p.status,
       featured: p.featured === 1,
       publish: p.published_at !== null,
@@ -78,6 +82,8 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
         support_md: form.has_support && form.support_md.trim().length > 0 ? form.support_md : null,
         external_url: form.external_url || null,
         repository_url: form.repository_url || null,
+        image_url: form.image_url.trim() ? form.image_url.trim() : null,
+        image_alt: form.image_alt.trim() ? form.image_alt.trim() : null,
         status: form.status,
         featured: form.featured,
         publish: form.publish,
@@ -184,6 +190,15 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
           <div className="grid gap-3 sm:grid-cols-2">
             <input className="input" placeholder="external_url" value={form.external_url} onChange={(e) => setForm({ ...form, external_url: e.target.value })} />
             <input className="input" placeholder="repository_url" value={form.repository_url} onChange={(e) => setForm({ ...form, repository_url: e.target.value })} />
+          </div>
+          <div className="grid gap-3 rounded-lg border border-cyan-300/15 bg-slate-950/40 p-4">
+            <p className="font-mono text-xs text-cyan-200">Cover image <span className="text-cyan-300/60">(optional)</span></p>
+            <input className="input" placeholder="image_url (https://...)" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+            <input className="input" placeholder="image_alt (describe the image)" value={form.image_alt} onChange={(e) => setForm({ ...form, image_alt: e.target.value })} />
+            {form.image_url.trim() ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={form.image_url} alt={form.image_alt || ""} className="mt-1 max-h-48 w-auto rounded border border-cyan-300/25 object-contain" />
+            ) : null}
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <select className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as ProjectStatus })}>
