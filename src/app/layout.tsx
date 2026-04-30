@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Rajdhani, Share_Tech_Mono, Syncopate } from "next/font/google";
-import { headers } from "next/headers";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
 const rajdhani = Rajdhani({
   variable: "--font-rajdhani",
@@ -64,24 +61,17 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerStore = await headers();
-  const pathname = headerStore.get("x-pathname") ?? "";
-  const isChromeless = pathname.startsWith("/admin");
   return (
     <html
       lang="en"
       className={`${rajdhani.variable} ${shareTechMono.variable} ${syncopate.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {isChromeless ? null : <SiteHeader />}
-        <div className="flex flex-1 flex-col">{children}</div>
-        {isChromeless ? null : <SiteFooter />}
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/api/admin/login") ||
     pathname.startsWith("/api/admin/mfa/verify")
   ) {
-    return withSecurityHeaders(forwardPathname(request, pathname), pathname);
+    return withSecurityHeaders(NextResponse.next(), pathname);
   }
 
   // Gate /admin/* and /api/admin/* on presence of session cookie.
@@ -33,13 +33,7 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return withSecurityHeaders(forwardPathname(request, pathname), pathname);
-}
-
-function forwardPathname(request: NextRequest, pathname: string): NextResponse {
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-pathname", pathname);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return withSecurityHeaders(NextResponse.next(), pathname);
 }
 
 function withSecurityHeaders(response: NextResponse, pathname: string): NextResponse {
