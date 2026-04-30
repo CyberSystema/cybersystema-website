@@ -9,8 +9,12 @@ const SESSION_COOKIE = "__Host-cs_admin_session";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow public login + login API.
-  if (pathname === "/admin/login" || pathname.startsWith("/api/admin/login")) {
+  // Allow public login + login API + MFA verify (uses its own pre-MFA cookie).
+  if (
+    pathname === "/admin/login" ||
+    pathname.startsWith("/api/admin/login") ||
+    pathname.startsWith("/api/admin/mfa/verify")
+  ) {
     return withSecurityHeaders(forwardPathname(request, pathname), pathname);
   }
 
