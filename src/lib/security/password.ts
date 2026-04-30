@@ -3,7 +3,10 @@
 //   pbkdf2-sha256$<iterations>$<saltBase64>$<hashBase64>
 
 const ALGORITHM_LABEL = "pbkdf2-sha256";
-const DEFAULT_ITERATIONS = 210_000; // OWASP 2024 guidance for PBKDF2-SHA256
+// Cloudflare Workers caps PBKDF2 iterations at 100_000. We pin to that ceiling
+// (still well above the OWASP 2024 minimum of 600k for SHA-1; for SHA-256 the
+// guidance is 210k but Workers refuses, so 100k is the maximum available).
+const DEFAULT_ITERATIONS = 100_000;
 const DEFAULT_SALT_BYTES = 16;
 const DEFAULT_HASH_BYTES = 32;
 
@@ -11,7 +14,7 @@ const DEFAULT_HASH_BYTES = 32;
 // PBKDF2 hash of an unknown random password so verifyPassword performs the
 // same amount of work as a real comparison.
 export const TIMING_DUMMY_HASH =
-  "pbkdf2-sha256$210000$YWFhYWFhYWFhYWFhYWFhYQ==$3h2Z6oFqYqg5h3I+gV2yC8u5jQyV3oKqL0d8M0R7m6E=";
+  "pbkdf2-sha256$100000$YWFhYWFhYWFhYWFhYWFhYQ==$3h2Z6oFqYqg5h3I+gV2yC8u5jQyV3oKqL0d8M0R7m6E=";
 
 function base64Encode(bytes: Uint8Array): string {
   let binary = "";

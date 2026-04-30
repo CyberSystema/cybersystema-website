@@ -48,7 +48,7 @@ export default function ContactForm({ turnstileSiteKey }: { turnstileSiteKey: st
       <input className="input" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required maxLength={120} />
       <input className="input" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength={254} />
       <input className="input" placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} required maxLength={160} />
-      <textarea className="input min-h-[160px]" placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)} required maxLength={5000} />
+      <textarea className="input min-h-40" placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)} required maxLength={5000} />
       {/* Honeypot field — hidden from real users via aria + style. */}
       <input
         className="hidden"

@@ -33,7 +33,7 @@ if (!/^(super_admin|content_admin|read_only)$/.test(role)) {
   process.exit(1);
 }
 
-const ITERATIONS = 210_000;
+const ITERATIONS = 100_000;
 const SALT_BYTES = 16;
 const HASH_BYTES = 32;
 const salt = new Uint8Array(SALT_BYTES);

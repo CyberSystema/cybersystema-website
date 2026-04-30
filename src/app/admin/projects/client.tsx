@@ -107,7 +107,7 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
             <input className="input" placeholder="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <input className="input" placeholder="summary" value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} required />
-          <textarea className="input min-h-[140px]" placeholder="description (markdown)" value={form.description_md} onChange={(e) => setForm({ ...form, description_md: e.target.value })} required />
+          <textarea className="input min-h-35" placeholder="description (markdown)" value={form.description_md} onChange={(e) => setForm({ ...form, description_md: e.target.value })} required />
           <div className="grid gap-3 sm:grid-cols-2">
             <input className="input" placeholder="external_url" value={form.external_url} onChange={(e) => setForm({ ...form, external_url: e.target.value })} />
             <input className="input" placeholder="repository_url" value={form.repository_url} onChange={(e) => setForm({ ...form, repository_url: e.target.value })} />
