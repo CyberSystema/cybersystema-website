@@ -33,7 +33,7 @@ export default async function ProjectPrivacyPage({ params }: Params) {
       <Link href={`/projects/${project.slug}`} className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300/70 hover:text-cyan-200">← Back to {project.name}</Link>
       <header className="space-y-1">
         <p className="font-mono text-[11px] uppercase tracking-[0.45em] text-cyan-300/75">Privacy Notice</p>
-        <h1 className="font-display text-4xl leading-tight tracking-[0.1em] text-cyan-100">{project.name}</h1>
+        <h1 className="font-display text-4xl leading-tight tracking-widest text-cyan-100">{project.name}</h1>
       </header>
       <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-5">
         <Markdown source={project.privacy_md} />

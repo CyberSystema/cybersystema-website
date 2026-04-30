@@ -32,7 +32,7 @@ export default async function AdminDashboardPage(props: {
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-cyan-300/30 bg-slate-950/65 p-6">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">Administrator Console</p>
-          <h1 className="mt-1 font-display text-3xl tracking-[0.1em] text-cyan-100">CyberSystema Control Plane</h1>
+          <h1 className="mt-1 font-display text-3xl tracking-widest text-cyan-100">CyberSystema Control Plane</h1>
           <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-cyan-100/65">
             {session.user.username} · {role.replace("_", " ")} · MFA {session.user.mfa_enabled ? "Enabled" : "Disabled"}
           </p>

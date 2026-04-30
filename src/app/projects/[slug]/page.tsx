@@ -22,7 +22,7 @@ export default async function ProjectDetailPage({ params }: Params) {
       <Link href="/projects" className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300/70 hover:text-cyan-200">← Back to projects</Link>
       <header className="space-y-2">
         <p className="font-mono text-[11px] uppercase tracking-[0.45em] text-cyan-300/75">CyberSystema Project</p>
-        <h1 className="font-display text-4xl leading-tight tracking-[0.1em] text-cyan-100">{project.name}</h1>
+        <h1 className="font-display text-4xl leading-tight tracking-widest text-cyan-100">{project.name}</h1>
         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-300/70">Status: {project.status}</p>
         <p className="font-mono text-sm leading-relaxed text-cyan-100/85">{project.summary}</p>
       </header>

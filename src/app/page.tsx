@@ -45,7 +45,7 @@ export default function Home() {
         <section className="grid gap-4 sm:grid-cols-3">
           <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-6">
             <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">01 · Edge-Native</p>
-            <h2 className="mt-3 font-display text-xl tracking-[0.1em] text-cyan-100">Globally distributed</h2>
+            <h2 className="mt-3 font-display text-xl tracking-widest text-cyan-100">Globally distributed</h2>
             <p className="mt-2 font-mono text-xs leading-relaxed text-cyan-100/75">
               Every system is deployed to Cloudflare&apos;s global network, serving requests
               milliseconds from the user with zero cold starts.
@@ -53,7 +53,7 @@ export default function Home() {
           </article>
           <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-6">
             <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">02 · Secure by Design</p>
-            <h2 className="mt-3 font-display text-xl tracking-[0.1em] text-cyan-100">Defense in depth</h2>
+            <h2 className="mt-3 font-display text-xl tracking-widest text-cyan-100">Defense in depth</h2>
             <p className="mt-2 font-mono text-xs leading-relaxed text-cyan-100/75">
               Hardened authentication, role-based access, multi-factor enrollment, audit
               trails, CSRF protection, and modern security headers — by default.
@@ -61,7 +61,7 @@ export default function Home() {
           </article>
           <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-6">
             <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">03 · Engineered to Last</p>
-            <h2 className="mt-3 font-display text-xl tracking-[0.1em] text-cyan-100">Operational rigor</h2>
+            <h2 className="mt-3 font-display text-xl tracking-widest text-cyan-100">Operational rigor</h2>
             <p className="mt-2 font-mono text-xs leading-relaxed text-cyan-100/75">
               Type-safe, lint-clean, reproducible builds with automated migrations and full
               audit visibility for every administrative action.
