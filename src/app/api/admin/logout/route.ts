@@ -14,8 +14,9 @@ import { hashIp } from "@/lib/security/ip-hash";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function POST() {
-  const response = NextResponse.json({ success: true });
+export async function POST(request: Request) {
+  const url = new URL("/admin/login", request.url);
+  const response = NextResponse.redirect(url, { status: 303 });
   const env = getServerSecurityEnv();
   const cf = await getCloudflareEnv();
   const cookieStore = await cookies();

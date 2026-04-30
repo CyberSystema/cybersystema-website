@@ -10,7 +10,7 @@ export async function SiteHeader() {
     isAdmin = false;
   }
   return (
-    <header className="border-b border-cyan-300/15 bg-[#030813]/85 backdrop-blur supports-[backdrop-filter]:bg-[#030813]/60">
+    <header className="border-b border-cyan-300/15 bg-[#030813]/85 backdrop-blur supports-backdrop-filter:bg-[#030813]/60">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="group flex items-center gap-3">
           <span aria-hidden className="block h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.85)]" />

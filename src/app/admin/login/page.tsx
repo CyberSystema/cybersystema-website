@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -86,6 +87,14 @@ function AdminLoginForm() {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 items-center justify-center px-6 py-16">
       <div className="w-full rounded-xl border border-cyan-300/30 bg-slate-950/70 p-8 shadow-[0_0_42px_rgba(30,185,255,0.18)]">
+        <div className="mb-4 flex justify-end">
+          <Link
+            href="/"
+            className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/75 hover:text-cyan-100"
+          >
+            ← Public site
+          </Link>
+        </div>
         <h1 className="font-display text-2xl tracking-[0.14em] text-cyan-100">Administrator Console</h1>
         <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-cyan-100/65">
           {stage === "login" ? "Authorized personnel only" : "Multi-factor verification"}
