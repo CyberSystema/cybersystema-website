@@ -5,6 +5,9 @@
 // Requires: wrangler in PATH and authenticated for --remote.
 
 import { execSync } from "node:child_process";
+import { writeFileSync, unlinkSync, mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const args = process.argv.slice(2);
 function arg(name, fallback) {
@@ -58,9 +61,19 @@ const sql = `INSERT INTO admin_users (id, username, role, password_hash, mfa_ena
 VALUES ('${sqlEscape(id)}', '${sqlEscape(username)}', '${sqlEscape(role)}', '${sqlEscape(passwordHash)}', 0, 1)
 ON CONFLICT(username) DO UPDATE SET role=excluded.role, password_hash=excluded.password_hash, is_active=1, password_changed_at=CURRENT_TIMESTAMP, failed_login_count=0, locked_until=NULL;`;
 
+// Write SQL to a temp file so the shell doesn't try to expand `$` inside the
+// PBKDF2 hash payload (e.g. `$210000$<salt>$<hash>`).
 const flag = remote ? "--remote" : "--local";
 console.log(`> Seeding admin '${username}' (role=${role}) ${remote ? "REMOTE" : "LOCAL"}`);
-execSync(`npx wrangler d1 execute DB ${flag} --config wrangler.toml --command "${sql.replace(/"/g, '\\"')}"`, {
-  stdio: "inherit",
-});
+const dir = mkdtempSync(join(tmpdir(), "seed-admin-"));
+const sqlFile = join(dir, "seed.sql");
+writeFileSync(sqlFile, sql, "utf8");
+try {
+  execSync(
+    `npx wrangler d1 execute DB ${flag} --config wrangler.toml --file ${JSON.stringify(sqlFile)}`,
+    { stdio: "inherit" },
+  );
+} finally {
+  try { unlinkSync(sqlFile); } catch { /* ignore */ }
+}
 console.log("Done. The admin can now log in and enroll MFA from /admin/security.");
