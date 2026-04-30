@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCloudflareEnv } from "@/lib/security/cloudflare";
 import { findProjectBySlug } from "@/lib/data/projects";
+import { Markdown } from "@/components/markdown";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,8 +25,8 @@ export default async function ProjectDetailPage({ params }: Params) {
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-300/70">{project.status}</p>
         <p className="font-mono text-sm text-cyan-100/85">{project.summary}</p>
       </header>
-      <article className="whitespace-pre-wrap rounded-xl border border-cyan-300/20 bg-slate-950/55 p-5 font-mono text-sm text-cyan-100/85">
-        {project.description_md}
+      <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-5">
+        <Markdown source={project.description_md} />
       </article>
       <div className="flex flex-wrap gap-2">
         {project.external_url ? (
@@ -33,6 +34,12 @@ export default async function ProjectDetailPage({ params }: Params) {
         ) : null}
         {project.repository_url ? (
           <a className="cyber-btn" href={project.repository_url} target="_blank" rel="noopener noreferrer">Source</a>
+        ) : null}
+        {project.privacy_md ? (
+          <Link className="cyber-btn" href={`/projects/${project.slug}/privacy`}>Privacy</Link>
+        ) : null}
+        {project.support_md ? (
+          <Link className="cyber-btn" href={`/projects/${project.slug}/support`}>Support</Link>
         ) : null}
       </div>
     </main>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { csrfFetch } from "@/lib/client/csrf";
 import type { ProjectRecord, ProjectStatus } from "@/lib/data/projects";
+import { Markdown } from "@/components/markdown";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["planned", "building", "live", "archived"];
 
@@ -15,6 +16,10 @@ const EMPTY_FORM = {
   name: "",
   summary: "",
   description_md: "",
+  has_privacy: false,
+  privacy_md: "",
+  has_support: false,
+  support_md: "",
   external_url: "",
   repository_url: "",
   status: "planned" as ProjectStatus,
@@ -28,6 +33,9 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [descTab, setDescTab] = useState<"write" | "preview">("write");
+  const [privTab, setPrivTab] = useState<"write" | "preview">("write");
+  const [supTab, setSupTab] = useState<"write" | "preview">("write");
 
   function loadIntoForm(p: ProjectRecord) {
     setForm({
@@ -36,6 +44,10 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
       name: p.name,
       summary: p.summary,
       description_md: p.description_md,
+      has_privacy: p.privacy_md !== null,
+      privacy_md: p.privacy_md ?? "",
+      has_support: p.support_md !== null,
+      support_md: p.support_md ?? "",
       external_url: p.external_url ?? "",
       repository_url: p.repository_url ?? "",
       status: p.status,
@@ -62,6 +74,8 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
         name: form.name,
         summary: form.summary,
         description_md: form.description_md,
+        privacy_md: form.has_privacy && form.privacy_md.trim().length > 0 ? form.privacy_md : null,
+        support_md: form.has_support && form.support_md.trim().length > 0 ? form.support_md : null,
         external_url: form.external_url || null,
         repository_url: form.repository_url || null,
         status: form.status,
@@ -107,7 +121,66 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
             <input className="input" placeholder="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <input className="input" placeholder="summary" value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} required />
-          <textarea className="input min-h-35" placeholder="description (markdown)" value={form.description_md} onChange={(e) => setForm({ ...form, description_md: e.target.value })} required />
+          <div className="flex items-center gap-2">
+            <button type="button" className={`cyber-btn ${descTab === "write" ? "" : "opacity-60"}`} onClick={() => setDescTab("write")}>Write</button>
+            <button type="button" className={`cyber-btn ${descTab === "preview" ? "" : "opacity-60"}`} onClick={() => setDescTab("preview")}>Preview</button>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-200/60">Markdown · GFM</span>
+          </div>
+          {descTab === "write" ? (
+            <textarea className="input min-h-35" placeholder="description (markdown)" value={form.description_md} onChange={(e) => setForm({ ...form, description_md: e.target.value })} required />
+          ) : (
+            <div className="min-h-35 rounded-lg border border-cyan-300/25 bg-slate-950/60 p-4">
+              {form.description_md.trim().length > 0 ? (
+                <Markdown source={form.description_md} />
+              ) : (
+                <p className="font-mono text-xs text-cyan-100/55">Nothing to preview.</p>
+              )}
+            </div>
+          )}
+
+          <div className="mt-2 grid gap-3 rounded-lg border border-cyan-300/15 bg-slate-950/40 p-4">
+            <label className="flex items-center gap-2 font-mono text-xs text-cyan-200">
+              <input type="checkbox" checked={form.has_privacy} onChange={(e) => setForm({ ...form, has_privacy: e.target.checked })} />
+              Has privacy page <span className="text-cyan-300/60">(/projects/{form.slug || "slug"}/privacy)</span>
+            </label>
+            {form.has_privacy ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <button type="button" className={`cyber-btn ${privTab === "write" ? "" : "opacity-60"}`} onClick={() => setPrivTab("write")}>Write</button>
+                  <button type="button" className={`cyber-btn ${privTab === "preview" ? "" : "opacity-60"}`} onClick={() => setPrivTab("preview")}>Preview</button>
+                </div>
+                {privTab === "write" ? (
+                  <textarea className="input min-h-35" placeholder="privacy policy (markdown)" value={form.privacy_md} onChange={(e) => setForm({ ...form, privacy_md: e.target.value })} />
+                ) : (
+                  <div className="min-h-35 rounded-lg border border-cyan-300/25 bg-slate-950/60 p-4">
+                    {form.privacy_md.trim().length > 0 ? <Markdown source={form.privacy_md} /> : <p className="font-mono text-xs text-cyan-100/55">Nothing to preview.</p>}
+                  </div>
+                )}
+              </>
+            ) : null}
+          </div>
+
+          <div className="grid gap-3 rounded-lg border border-cyan-300/15 bg-slate-950/40 p-4">
+            <label className="flex items-center gap-2 font-mono text-xs text-cyan-200">
+              <input type="checkbox" checked={form.has_support} onChange={(e) => setForm({ ...form, has_support: e.target.checked })} />
+              Has support page <span className="text-cyan-300/60">(/projects/{form.slug || "slug"}/support)</span>
+            </label>
+            {form.has_support ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <button type="button" className={`cyber-btn ${supTab === "write" ? "" : "opacity-60"}`} onClick={() => setSupTab("write")}>Write</button>
+                  <button type="button" className={`cyber-btn ${supTab === "preview" ? "" : "opacity-60"}`} onClick={() => setSupTab("preview")}>Preview</button>
+                </div>
+                {supTab === "write" ? (
+                  <textarea className="input min-h-35" placeholder="support page (markdown)" value={form.support_md} onChange={(e) => setForm({ ...form, support_md: e.target.value })} />
+                ) : (
+                  <div className="min-h-35 rounded-lg border border-cyan-300/25 bg-slate-950/60 p-4">
+                    {form.support_md.trim().length > 0 ? <Markdown source={form.support_md} /> : <p className="font-mono text-xs text-cyan-100/55">Nothing to preview.</p>}
+                  </div>
+                )}
+              </>
+            ) : null}
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <input className="input" placeholder="external_url" value={form.external_url} onChange={(e) => setForm({ ...form, external_url: e.target.value })} />
             <input className="input" placeholder="repository_url" value={form.repository_url} onChange={(e) => setForm({ ...form, repository_url: e.target.value })} />

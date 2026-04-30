@@ -8,6 +8,8 @@ export type ProjectRecord = {
   name: string;
   summary: string;
   description_md: string;
+  privacy_md: string | null;
+  support_md: string | null;
   external_url: string | null;
   repository_url: string | null;
   status: ProjectStatus;
@@ -55,6 +57,8 @@ export type ProjectInput = {
   name: string;
   summary: string;
   description_md: string;
+  privacy_md: string | null;
+  support_md: string | null;
   external_url: string | null;
   repository_url: string | null;
   status: ProjectStatus;
@@ -70,8 +74,8 @@ export async function createProject(
   const publishedAt = input.publish ? new Date().toISOString() : null;
   await db
     .prepare(
-      `INSERT INTO projects (id, slug, name, summary, description_md, external_url, repository_url, status, featured, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO projects (id, slug, name, summary, description_md, privacy_md, support_md, external_url, repository_url, status, featured, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -79,6 +83,8 @@ export async function createProject(
       input.name,
       input.summary,
       input.description_md,
+      input.privacy_md,
+      input.support_md,
       input.external_url,
       input.repository_url,
       input.status,
@@ -107,7 +113,7 @@ export async function updateProject(
   await db
     .prepare(
       `UPDATE projects
-         SET slug = ?, name = ?, summary = ?, description_md = ?, external_url = ?, repository_url = ?, status = ?, featured = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
+         SET slug = ?, name = ?, summary = ?, description_md = ?, privacy_md = ?, support_md = ?, external_url = ?, repository_url = ?, status = ?, featured = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
     )
     .bind(
@@ -115,6 +121,8 @@ export async function updateProject(
       input.name,
       input.summary,
       input.description_md,
+      input.privacy_md,
+      input.support_md,
       input.external_url,
       input.repository_url,
       input.status,
