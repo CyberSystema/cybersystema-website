@@ -68,9 +68,13 @@ export default function ContactForm({ turnstileSiteKey }: { turnstileSiteKey: st
         />
       ) : null}
       {error ? <p className="font-mono text-xs text-red-300" role="alert">{error}</p> : null}
-      {status === "ok" ? <p className="font-mono text-xs text-emerald-300">Message sent. We will get back to you soon.</p> : null}
+      {status === "ok" ? (
+        <p className="font-mono text-xs text-emerald-300">
+          Your message has been received. The CyberSystema team will respond as soon as possible.
+        </p>
+      ) : null}
       <button className="cyber-btn" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending..." : "Send message"}
+        {status === "sending" ? "Sending…" : "Send message"}
       </button>
 
       <style jsx>{`

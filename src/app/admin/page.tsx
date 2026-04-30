@@ -31,32 +31,34 @@ export default async function AdminDashboardPage(props: {
       ) : null}
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-cyan-300/30 bg-slate-950/65 p-6">
         <div>
-          <h1 className="font-display text-3xl tracking-[0.14em] text-cyan-100">CONTROL PLANE</h1>
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">Administrator Console</p>
+          <h1 className="mt-1 font-display text-3xl tracking-[0.1em] text-cyan-100">CyberSystema Control Plane</h1>
           <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-cyan-100/65">
-            {session.user.username} · {role.replace("_", " ")} · MFA {session.user.mfa_enabled ? "ON" : "OFF"}
+            {session.user.username} · {role.replace("_", " ")} · MFA {session.user.mfa_enabled ? "Enabled" : "Disabled"}
           </p>
         </div>
-        <form action="/api/admin/logout" method="post">
-          <button className="cyber-btn" type="submit">Sign Out</button>
+        <form action="/api/admin/logout" method="post" className="flex flex-wrap items-center gap-2">
+          <Link className="cyber-btn" href="/">Public site</Link>
+          <button className="cyber-btn" type="submit">Sign out</button>
         </form>
       </header>
 
       <nav className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <Link className="cyber-btn" href="/admin/projects">Projects ({projectCount})</Link>
-        <Link className="cyber-btn" href="/admin/contact">Contact Queue ({contactCount})</Link>
+        <Link className="cyber-btn" href="/admin/contact">Contact Inbox ({contactCount})</Link>
         <Link className="cyber-btn" href="/admin/security">Security & MFA</Link>
         {role === "super_admin" ? (
           <>
-            <Link className="cyber-btn" href="/admin/users">Admin Users</Link>
+            <Link className="cyber-btn" href="/admin/users">Administrator Accounts</Link>
             <Link className="cyber-btn" href="/admin/audit">Audit Log</Link>
           </>
         ) : null}
       </nav>
 
       <section className="grid gap-3 sm:grid-cols-3">
-        <article className="status-box">Projects: {projectCount}</article>
-        <article className="status-box">New contact submissions: {contactCount}</article>
-        <article className="status-box">Role: {role}</article>
+        <article className="status-box">Total projects: {projectCount}</article>
+        <article className="status-box">Pending submissions: {contactCount}</article>
+        <article className="status-box">Active role: {role}</article>
       </section>
     </main>
   );

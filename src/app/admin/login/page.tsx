@@ -86,9 +86,9 @@ function AdminLoginForm() {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 items-center justify-center px-6 py-16">
       <div className="w-full rounded-xl border border-cyan-300/30 bg-slate-950/70 p-8 shadow-[0_0_42px_rgba(30,185,255,0.18)]">
-        <h1 className="font-display text-2xl tracking-[0.14em] text-cyan-100">ADMIN ACCESS</h1>
+        <h1 className="font-display text-2xl tracking-[0.14em] text-cyan-100">Administrator Console</h1>
         <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-cyan-100/65">
-          {stage === "login" ? "Restricted control plane" : "Multi-factor verification"}
+          {stage === "login" ? "Authorized personnel only" : "Multi-factor verification"}
         </p>
 
         {setupRequired ? (
@@ -132,14 +132,14 @@ function AdminLoginForm() {
             {TURNSTILE_SITE_KEY ? (
               <div className="space-y-1">
                 <label className="block font-mono text-xs uppercase tracking-[0.15em] text-cyan-200/80">
-                  Turnstile token
+                  Security verification token
                 </label>
                 <input
                   className="w-full rounded-md border border-cyan-400/35 bg-slate-900/80 px-3 py-2 font-mono text-xs text-cyan-100 outline-none focus:ring-2"
                   type="text"
                   value={turnstileToken}
                   onChange={(e) => setTurnstileToken(e.target.value)}
-                  placeholder="Embed Turnstile widget here"
+                  placeholder="Provided by Cloudflare Turnstile"
                 />
               </div>
             ) : null}
@@ -147,7 +147,7 @@ function AdminLoginForm() {
             {error ? <p className="font-mono text-xs text-red-300" role="alert">{error}</p> : null}
 
             <button className="cyber-btn w-full" type="submit" disabled={loading}>
-              {loading ? "Authenticating..." : "Authenticate"}
+              {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
         ) : (
@@ -170,7 +170,7 @@ function AdminLoginForm() {
             {error ? <p className="font-mono text-xs text-red-300" role="alert">{error}</p> : null}
 
             <button className="cyber-btn w-full" type="submit" disabled={loading}>
-              {loading ? "Verifying..." : "Verify"}
+              {loading ? "Verifying…" : "Verify identity"}
             </button>
           </form>
         )}
