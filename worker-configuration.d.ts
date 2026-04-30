@@ -7,7 +7,6 @@ declare namespace Cloudflare {
 	}
 	interface Env {
 		SECURITY_KV: KVNamespace;
-		MEDIA_BUCKET: R2Bucket;
 		DB: D1Database;
 		ASSETS: Fetcher;
 		NODE_ENV: "production";

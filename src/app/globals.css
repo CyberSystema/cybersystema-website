@@ -49,6 +49,20 @@ body {
   box-shadow: 0 0 24px rgba(32, 216, 255, 0.28);
 }
 
+.cyber-btn:focus-visible {
+  outline: 2px solid var(--cyber-cyan);
+  outline-offset: 3px;
+  border-color: rgba(104, 227, 255, 0.9);
+  box-shadow: 0 0 24px rgba(32, 216, 255, 0.45);
+}
+
+.cyber-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .status-box {
   border: 1px solid rgba(98, 154, 255, 0.35);
   background: rgba(6, 16, 40, 0.65);

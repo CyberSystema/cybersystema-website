@@ -1,3 +1,7 @@
+import Link from "next/link";
+
+export const dynamic = "force-static";
+
 export default function Home() {
   return (
     <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[#030813] px-6 py-16 text-[#cdefff]">
@@ -14,32 +18,29 @@ export default function Home() {
             CYBERSYSTEMA
           </h1>
           <p className="mx-auto max-w-2xl font-mono text-base text-cyan-100/75 sm:text-lg">
-            A production-grade Next.js platform migration is in progress. Public experiences
-            and a secured administrator control panel are being built for Cloudflare.
+            Production-grade platform on Next.js + Cloudflare. Live projects, secure admin
+            control plane with multi-factor authentication, role-based access, and audit trail.
           </p>
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <a className="cyber-btn" href="https://oknstudio.cybersystema.com" target="_blank" rel="noopener noreferrer">
-            OKN Studio
-          </a>
-          <a className="cyber-btn" href="https://orthodox-korea-calendar.pages.dev/" target="_blank" rel="noopener noreferrer">
-            Orthodox Korea Calendar
-          </a>
+          <Link className="cyber-btn" href="/projects">Projects</Link>
+          <Link className="cyber-btn" href="/contact">Contact</Link>
           <a className="cyber-btn" href="https://github.com/CyberSystema" target="_blank" rel="noopener noreferrer">
             GitHub Organization
           </a>
-          <a className="cyber-btn" href="/admin/login">
+          <Link className="cyber-btn" href="/admin/login">
             Administrator Login
-          </a>
+          </Link>
         </section>
 
         <section className="grid gap-4 text-sm text-cyan-100/75 sm:grid-cols-3">
           <div className="status-box">System Status: Online</div>
-          <div className="status-box">Mode: Secure Migration</div>
-          <div className="status-box">Target: Cloudflare Free Plan</div>
+          <div className="status-box">Edge: Cloudflare Workers</div>
+          <div className="status-box">Auth: D1 + MFA</div>
         </section>
       </main>
     </div>
   );
 }
+

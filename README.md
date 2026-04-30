@@ -1,41 +1,34 @@
 # CyberSystema Web (Next.js)
 
-Production migration target for CyberSystema public website and secure administrator control plane.
+Production-grade Next.js 16 + Cloudflare Workers platform: public site (`/`, `/projects`, `/contact`) plus a hardened administrator control plane (`/admin/**`).
 
-## Current Baseline
+## Highlights
 
-- Next.js App Router with TypeScript
-- CyberSystema-branded public landing page
-- Hardened security headers via Next.js config (`next.config.ts`)
-- Admin login flow (`/admin/login`) with:
-	- strict input validation (`zod`)
-	- rate limiting (in-memory placeholder)
-	- signed HttpOnly secure session token (`jose`)
-- Admin dashboard guard (`/admin`)
-- Cloudflare deployment scaffolding (`wrangler.toml`)
-- D1 schema baseline (`db/migrations/0001_init.sql`)
+- Next.js 16 App Router (Turbopack), React 19, TypeScript 6
+- Cloudflare Workers via `@opennextjs/cloudflare`
+- D1-backed admin users, projects, contact submissions, audit log
+- Admin auth: PBKDF2-SHA256 passwords, optional **TOTP MFA**, recovery codes, lockout, JTI revocation
+- Sessions: HS256 JWT in `__Host-` cookies, double-submit CSRF, KV-backed rate limiting
+- AES-GCM at-rest encryption for MFA secrets (HKDF-derived key)
+- Per-IP HMAC hashing (no plain-text IPs in DB), Turnstile captcha hooks, audit log
+- Edge middleware adds security headers and gates `/admin/**` early
 
 ## Local Setup
 
-1. Install dependencies:
-
 ```bash
 npm install
+cp .env.example .env.local       # set ADMIN_SESSION_SECRET (32+ chars)
+npm run db:apply:local           # apply D1 migrations to local SQLite
+npm run seed-admin -- --username admin --password 'a-very-strong-pass' --role super_admin
+npm run dev                      # http://localhost:3000
 ```
 
-2. Copy environment file and set secure values:
+For production, repeat seeding against the remote D1:
 
 ```bash
-cp .env.example .env.local
+npm run db:apply:remote
+npm run seed-admin -- --username admin --password '...' --role super_admin --remote
 ```
-
-3. Run development server:
-
-```bash
-npm run dev
-```
-
-4. Open `http://localhost:3000`.
 
 ## Quality Gates
 
@@ -43,63 +36,57 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run cf:build
 ```
 
 ## Cloudflare Workflow
 
-Build and deploy workflow is prepared for OpenNext + Workers:
-
 ```bash
-npm run cf:build
-npm run cf:preview
-npm run cf:deploy
+npm run cf:build      # OpenNext bundle
+npm run cf:preview    # local Workers preview
+npm run cf:deploy     # production deploy
 ```
 
-Before deployment, update `wrangler.toml` bindings for D1/KV and configure secrets in Cloudflare.
-R2 is disabled by default in this repository for near-zero cost operation.
+Bindings configured in `wrangler.toml`:
+- `DB` — D1 database (admin_users, projects, contact_submissions, audit_logs, …)
+- `SECURITY_KV` — KV namespace for rate-limit buckets and JTI revocations
+- `ASSETS` — static assets
 
-## Public Repository Baseline
+R2 is intentionally disabled.
 
-This repository is prepared for public GitHub hosting.
+## Environment Variables
 
-- Local secret files remain ignored while `.env.example` stays committed.
-- CI verifies lint, typecheck, and production build on pushes and pull requests.
-- CodeQL is enabled for automated static analysis.
-- Dependabot is configured for dependency and GitHub Actions updates.
-- Production deploys are handled by Cloudflare Git-linked Worker builds.
-- Security reporting guidance lives in `SECURITY.md`.
-- Contribution expectations live in `CONTRIBUTING.md`.
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `ADMIN_SESSION_SECRET` | yes | JWT HS256 signing, AES-GCM HKDF, IP HMAC. 32+ chars. |
+| `TURNSTILE_SECRET_KEY` | no | Server-side Turnstile verification. |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | no | Renders the Turnstile widget on login + contact. |
+| `CONTACT_NOTIFY_EMAIL` | no | Operational notification target for contact submissions. |
 
-## Automatic Deployment via Cloudflare
+There are **no** static admin credentials in env — admin users live in D1.
 
-This project uses Cloudflare Git-linked deployment as the single production deploy path.
+## Admin Roles
 
-Recommended Cloudflare Worker build settings:
+- `super_admin` — full access, can manage other admins, view audit log
+- `content_admin` — manage projects + contact queue
+- `read_only` — read-only views of projects + contact
 
-1. Root directory: `/web`
-2. Build command: `npm ci && npm run cf:build`
-3. Deploy command: `npx wrangler deploy --config wrangler.toml`
+## Admin Surfaces
 
-Keep GitHub Actions CI (`ci.yml`) for quality checks only.
+- `/admin` — dashboard with role-aware nav + counts
+- `/admin/projects` — projects CRUD
+- `/admin/contact` — submissions queue + status workflow
+- `/admin/users` — admin user management (super_admin only)
+- `/admin/audit` — append-only audit log (super_admin only)
+- `/admin/security` — per-user MFA enrolment + recovery codes
 
-## Security Notes
+## Public Surfaces
 
-- Do not keep plaintext `ADMIN_PASSWORD` long-term.
-- Next phase should move admin auth to salted password hash storage in D1 and add MFA.
-- Current login rate limiter is process-local; replace with Cloudflare KV-based distributed limiter.
-- Add Turnstile verification to admin login and contact form before production launch.
+- `/` — landing page
+- `/projects` and `/projects/[slug]` — published projects
+- `/contact` — contact form (rate-limited, honeypot + optional Turnstile)
 
-## Cost Control Notes
+## Security
 
-- Default mode is optimized for minimal Cloudflare spend.
-- R2 object storage is intentionally not bound by default.
-- OpenNext R2 incremental cache is intentionally disabled.
-- Enable R2 only for specific features that require file/object storage.
+See `SECURITY.md` for the full posture summary, threat model, and reporting policy.
 
-## Next Implementation Targets
-
-1. D1-backed admin users and projects CRUD
-2. Contact pipeline with Turnstile + transactional email provider
-3. KV-backed global rate limiting and lockouts
-4. Audit logging for all privileged actions
-5. CI pipeline with dependency and secret scanning

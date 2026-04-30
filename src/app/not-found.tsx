@@ -1,0 +1,12 @@
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
+      <p className="font-mono text-xs uppercase tracking-[0.45em] text-cyan-300/70">{"// 404 //"}</p>
+      <h1 className="font-display text-5xl tracking-[0.14em] text-cyan-100">Not found</h1>
+      <p className="font-mono text-sm text-cyan-100/70">The resource you requested does not exist or has been archived.</p>
+      <Link href="/" className="cyber-btn mt-4">Return home</Link>
+    </main>
+  );
+}

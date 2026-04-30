@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   metadata_json TEXT,
   source_ip_hash TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (actor_user_id) REFERENCES admin_users(id)
+  FOREIGN KEY (actor_user_id) REFERENCES admin_users(id) ON DELETE SET NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
