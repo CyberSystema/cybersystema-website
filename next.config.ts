@@ -22,15 +22,15 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   images: {
+    // Use Cloudflare Image Resizing as the optimizer (next/image custom loader).
+    loader: "custom",
+    loaderFile: "./image-loader.ts",
+    deviceSizes: [320, 480, 640, 750, 828, 1080, 1200, 1600, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 192, 256, 384, 512, 768],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "github.com",
-      },
-      {
-        protocol: "https",
-        hostname: "raw.githubusercontent.com",
-      },
+      // Admin-curated URLs may live on any HTTPS host; Cloudflare Image
+      // Resizing handles fetch + transform safely on the edge.
+      { protocol: "https", hostname: "**" },
     ],
   },
   async headers() {

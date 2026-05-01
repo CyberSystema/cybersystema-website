@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCloudflareEnv } from "@/lib/security/cloudflare";
 import { findProjectBySlug } from "@/lib/data/projects";
@@ -23,22 +22,10 @@ export default async function ProjectDetailPage({ params }: Params) {
       <Link href="/projects" className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300/70 hover:text-cyan-200">← Back to projects</Link>
       <header className="space-y-2">
         <p className="font-mono text-[11px] uppercase tracking-[0.45em] text-cyan-300/75">CyberSystema Project</p>
-        <h1 className="font-display text-4xl leading-tight tracking-widest text-cyan-100">{project.name}</h1>
+        <h1 className="font-display text-4xl leading-tight tracking-[0.1em] text-cyan-100">{project.name}</h1>
         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cyan-300/70">Status: {project.status}</p>
         <p className="font-mono text-sm leading-relaxed text-cyan-100/85">{project.summary}</p>
       </header>
-      {project.image_url ? (
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-cyan-300/25">
-          <Image
-            src={project.image_url}
-            alt={project.image_alt ?? project.name}
-            fill
-            sizes="(min-width: 768px) 768px, 100vw"
-            className="object-cover"
-            priority
-          />
-        </div>
-      ) : null}
       <article className="rounded-xl border border-cyan-300/20 bg-slate-950/55 p-5">
         <Markdown source={project.description_md} />
       </article>
