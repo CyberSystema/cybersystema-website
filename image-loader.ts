@@ -14,8 +14,11 @@ type LoaderArgs = {
 };
 
 export default function cloudflareImageLoader({ src, width, quality }: LoaderArgs): string {
+  // Cap requested width: above ~1600px the visual gain on common displays is
+  // negligible while bytes nearly double. Keeps thumbnails lean even on 3x DPR.
+  const w = Math.min(Math.round(width), 1600);
   const params = [
-    `width=${Math.round(width)}`,
+    `width=${w}`,
     `quality=${Math.min(Math.max(quality ?? 82, 30), 95)}`,
     "format=auto",
     "fit=scale-down",

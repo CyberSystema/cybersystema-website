@@ -197,7 +197,7 @@ export default function ProjectsAdminClient({ initialProjects, canEdit }: Props)
             <input className="input" placeholder="image_alt (describe the image)" value={form.image_alt} onChange={(e) => setForm({ ...form, image_alt: e.target.value })} />
             {form.image_url.trim() ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={form.image_url} alt={form.image_alt || ""} className="mt-1 max-h-48 w-auto rounded border border-cyan-300/25 object-contain" />
+              <img src={form.image_url} alt={form.image_alt || ""} className="mt-1 h-20 w-20 rounded-2xl border border-cyan-300/25 object-cover" />
             ) : null}
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
