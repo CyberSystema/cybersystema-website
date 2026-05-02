@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -6,7 +7,17 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-cyan-300/15 bg-[#030813]/80">
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-6 py-10 sm:grid-cols-3">
         <div>
-          <p className="font-display text-sm tracking-[0.28em] text-cyan-100">CYBERSYSTEMA</p>
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="CyberSystema"
+              width={32}
+              height={32}
+              sizes="32px"
+              className="h-8 w-8 rounded-md"
+            />
+            <p className="font-display text-sm tracking-[0.28em] text-cyan-100">CYBERSYSTEMA</p>
+          </div>
           <p className="mt-3 max-w-xs font-mono text-xs leading-relaxed text-cyan-100/65">
             An independent technology organization building secure, edge-native software.
           </p>

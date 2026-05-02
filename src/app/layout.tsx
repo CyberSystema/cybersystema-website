@@ -44,12 +44,14 @@ export const metadata: Metadata = {
     title: "CyberSystema — Secure Edge-Native Engineering",
     description:
       "Independent technology organization engineering secure, edge-native platforms and applications.",
+    images: [{ url: "/opengraph-image.png", width: 1200, height: 1200, alt: "CyberSystema" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "CyberSystema",
     description:
       "Independent technology organization engineering secure, edge-native platforms and applications.",
+    images: ["/twitter-image.png"],
   },
   robots: { index: true, follow: true },
 };

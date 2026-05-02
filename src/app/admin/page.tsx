@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { requireAdminPage } from "@/lib/security/auth-context";
 import { getCloudflareEnv } from "@/lib/security/cloudflare";
@@ -30,12 +31,23 @@ export default async function AdminDashboardPage(props: {
         </div>
       ) : null}
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-cyan-300/30 bg-slate-950/65 p-6">
-        <div>
+        <div className="flex items-center gap-4">
+          <Image
+            src="/logo.png"
+            alt="CyberSystema"
+            width={64}
+            height={64}
+            priority
+            sizes="64px"
+            className="h-16 w-16 rounded-lg shadow-[0_0_18px_rgba(34,211,238,0.35)]"
+          />
+          <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300/65">Administrator Console</p>
           <h1 className="mt-1 font-display text-3xl tracking-widest text-cyan-100">CyberSystema Control Plane</h1>
           <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-cyan-100/65">
             {session.user.username} · {role.replace("_", " ")} · MFA {session.user.mfa_enabled ? "Enabled" : "Disabled"}
           </p>
+          </div>
         </div>
         <form action="/api/admin/logout" method="post" className="flex flex-wrap items-center gap-2">
           <Link className="cyber-btn" href="/">Public site</Link>

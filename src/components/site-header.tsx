@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { resolveAdminSession } from "@/lib/security/auth-context";
 
@@ -13,7 +14,15 @@ export async function SiteHeader() {
     <header className="border-b border-cyan-300/15 bg-[#030813]/85 backdrop-blur supports-backdrop-filter:bg-[#030813]/60">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="group flex items-center gap-3">
-          <span aria-hidden className="block h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.85)]" />
+          <Image
+            src="/logo.png"
+            alt="CyberSystema"
+            width={36}
+            height={36}
+            priority
+            sizes="36px"
+            className="h-9 w-9 rounded-md shadow-[0_0_12px_rgba(34,211,238,0.35)]"
+          />
           <span className="font-display text-sm tracking-[0.32em] text-cyan-100 group-hover:text-cyan-200">
             CYBERSYSTEMA
           </span>
